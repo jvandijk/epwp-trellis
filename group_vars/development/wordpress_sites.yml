@@ -9,6 +9,7 @@ wordpress_sites:
         redirects:
           - www.epwp.com
     local_path: ../site # path targeting local Bedrock site directory (relative to Ansible root)
+    admin_user: epwp_user
     admin_email: me@epwp.com
     multisite:
       enabled: false
