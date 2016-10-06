@@ -90,6 +90,7 @@ Vagrant.configure('2') do |config|
       config.vm.synced_folder local_site_path(site), remote_site_path(name, site), owner: 'vagrant', group: 'www-data', mount_options: ['dmode=776', 'fmode=775']
     end
     config.vm.synced_folder File.join(ANSIBLE_PATH, 'hosts'), File.join(ANSIBLE_PATH.sub(__dir__, '/vagrant'), 'hosts'), mount_options: ['dmode=755', 'fmode=644']
+    config.vm.synced_folder File.join(ANSIBLE_PATH, 'vault'), File.join(ANSIBLE_PATH.sub(__dir__, '/vagrant'), 'vault'), mount_options: ['dmode=755', 'fmode=600']
   else
     if !Vagrant.has_plugin? 'vagrant-bindfs'
       fail_with_message "vagrant-bindfs missing, please install the plugin with this command:\nvagrant plugin install vagrant-bindfs"
@@ -98,6 +99,7 @@ Vagrant.configure('2') do |config|
         config.vm.synced_folder local_site_path(site), nfs_path(name), type: 'nfs'
         config.bindfs.bind_folder nfs_path(name), remote_site_path(name, site), u: 'vagrant', g: 'www-data', o: 'nonempty'
       end
+      config.bindfs.bind_folder '/vagrant/vault', '/vagrant/vault', u: 'vagrant', g: 'vagrant', o: 'nonempty', p: 'u=rwD,dg=rx,do=rx'
     end
   end
 
